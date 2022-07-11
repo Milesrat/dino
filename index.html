@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Gra Dino v. 1.4 by Milesrat
+Gra Dino v. 1.5 by Milesrat
 Kod / omowienie / linki: https://oki.org.pl/dino
 Wersje:
 1.0 - Strona www z tekstem
@@ -8,6 +8,7 @@ Wersje:
 1.2 - ziemia
 1.3 - funkcje plansza/ziemia
 1.4 - kaktus
+1.5 - animacja :D
 -->
 <ktml>
 <head>
@@ -17,7 +18,7 @@ Wersje:
 <body>
  
 <div>
-  <strong>Gra dino v1.4 by CodeMonster</strong>
+  <strong>Gra dino v1.5 by CodeMonster</strong>
 <br />Dino idzie przez pustynie.
 </div>
 
@@ -27,6 +28,9 @@ Wersje:
 <script>
 
   let plansza, rysowanie;
+  let kaktus_x;
+
+  kaktus_x = 1150;
 
   plansza = document.getElementById("plansza_canvas");
   rysowanie = plansza.getContext("2d");
@@ -47,10 +51,17 @@ Wersje:
    rysowanie.fillRect(x,323,26, 52);
   }
 
-
+  function Gra() {
   Rysuj_Plansze();
   Rysuj_Ziemie();
-  Rysuj_Kaktusa(1150);
+  Rysuj_Kaktusa(kaktus_x);
+  kaktus_x=kaktus_x-1;
+  if (kaktus_x <0) {
+    kaktus_x = 1150;
+  }
+  }
+
+  setInterval(Gra, 10);
 
 
 </script>
