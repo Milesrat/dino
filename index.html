@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <!--
-Gra Dino v. 1.1 by Milesrat
+Gra Dino v. 1.2 by Milesrat
 Kod / omowienie / linki: https://oki.org.pl/dino
 Wersje:
 1.0 - Strona www z tekstem
 1.1 - canvas (plotno)
+1.2 - ziemia
 -->
 <ktml>
 <head>
@@ -14,7 +15,7 @@ Wersje:
 <body>
  
 <div>
-  <strong>Gra dino v1.0 by CodeMonster</strong>
+  <strong>Gra dino v1.2 by CodeMonster</strong>
 <br />Dino idzie przez pustynie.
 </div>
 
@@ -27,8 +28,13 @@ Wersje:
 
   plansza = document.getElementById("plansza_canvas");
   rysowanie = plansza.getContext("2d");
+
    rysowanie.fillStyle = "rgb(181,255,182)";
    rysowanie.fillRect(0,0,1200, 400);
+
+   rysowanie.fillStyle = "rgb(249,21,255)";
+   rysowanie.fillRect(0,375,1200, 5);
+
 
 </script>
   
