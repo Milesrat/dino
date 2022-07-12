@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Gra Dino v. 2.0 by Milesrat
+Gra Dino v. 2.1 by Milesrat
 Kod / omowienie / linki: https://oki.org.pl/dino
 Wersje:
 1.0 - Strona www z tekstem
@@ -13,8 +13,9 @@ Wersje:
 *******************************
 
 2.0 - poprawa czytelnosci kodu
+2.1 - kilka kaktusow - czesc pierwsza
 -->
-<ktml>
+<html>
 <head>
 
 </head>
@@ -22,7 +23,7 @@ Wersje:
 <body>
  
 <div>
-  <strong>Gra dino v2.0 by CodeMonster</strong>
+  <strong>Gra dino v2.1 by CodeMonster</strong>
 <br />Dino idzie przez pustynie.
 </div>
 
@@ -36,35 +37,57 @@ Wersje:
   plansza = document.getElementById("plansza_canvas");
   rysowanie = plansza.getContext("2d");
 
-  let kaktus_x;
-  kaktus_x = plansza.width + 36;
+  
+  class kaktus {
+  
+  constructor() {
+   
+   this.UstawKaktusa();
+
+  }
+
+  UstawKaktusa() {
+
+  this.kaktus_x = plansza.width + 40;
+  this.kaktus_y = 323;
+  this.kaktus_szerokosc_x = 26;
+  this.kaktus_wysokosc_y = 52;
+  this.kaktus_predkosc_x = 1;
+
+ }
+
+   RysujKaktusa(x) {
+
+    rysowanie.fillStyle = "rgb(65,129,0)";
+    rysowanie.fillRect(this.kaktus_x,this.kaktus_y,this.kaktus_szerokosc_x, this.kaktus_wysokosc_y);
+    this.kaktus_x = this.kaktus_x - this.kaktus_predkosc_x;
+    if (this.kaktus_x <0) {
+      this.UstawKaktusa();
+    }
+
+   }
+
+  }
 
   
-  function Rysuj_Plansze() {
+  function RysujPlansze() {
    rysowanie.fillStyle = "rgb(181,255,182)";
    rysowanie.fillRect(0,0,plansza.width, plansza.height);
   }
 
-  function Rysuj_Ziemie() {
+  function RysujZiemie() {
    rysowanie.fillStyle = "rgb(249,21,255)";
    rysowanie.fillRect(0,375,plansza.width, 5);
   }
 
-  function Rysuj_Kaktusa(x) {
-   rysowanie.fillStyle = "rgb(65,129,0)";
-   rysowanie.fillRect(x,323,26, 52);
-  }
-
   function Gra() {
-  Rysuj_Plansze();
-  Rysuj_Ziemie();
-  Rysuj_Kaktusa(kaktus_x);
-  kaktus_x=kaktus_x-1;
-  if (kaktus_x <0) {
-    kaktus_x = plansza.width + 36;
-  }
+  RysujPlansze();
+  RysujZiemie();
+  kaktus1.RysujKaktusa();
   }
 
+  let kaktus1;
+  kaktus1 = new kaktus();
   setInterval(Gra, 10);
 
 
