@@ -15,6 +15,7 @@ Wersje:
 2.0 - poprawa czytelnosci kodu
 2.1 - kilka kaktusow - czesc pierwsza
 2.2 - dino :D
+2.3 - dino lata
 -->
 <html>
 <head>
@@ -22,7 +23,7 @@ Wersje:
 <body>
  
 <div>
-  <strong>Gra dino v2.2 by CodeMonster</strong>
+  <strong>Gra dino v2.3 by CodeMonster</strong>
 <br />Dino idzie przez pustynie.
 </div>
 
@@ -45,7 +46,7 @@ Wersje:
 
    this.kaktus_x = plansza.width + 40;
    this.kaktus_y = 323;
-   this.kaktus_szerokosc_x = 26;
+   this.kaktus_szerokosc_x = 20;
    this.kaktus_wysokosc_y = 52;
    this.kaktus_predkosc_x = 1;
 
@@ -56,7 +57,7 @@ Wersje:
     rysowanie.fillStyle = "rgb(65,129,0)";
     rysowanie.fillRect(this.kaktus_x,this.kaktus_y,this.kaktus_szerokosc_x, this.kaktus_wysokosc_y);
     this.kaktus_x = this.kaktus_x - this.kaktus_predkosc_x;
-    if (this.kaktus_x <-25) {
+    if (this.kaktus_x <-19) {
       this.UstawKaktusa();
     }
 
@@ -75,11 +76,22 @@ Wersje:
      this.dino_y = 296;
      this.dino_szerokosc_x = 40;
      this.dino_wysokosc_y = 79;
+     this.czy_dino_skacze = false;
     }
 
     RysujDino() {
       rysowanie.fillStyle = "rgb(248,20,254)";
       rysowanie.fillRect(this.dino_x, this.dino_y, this.dino_szerokosc_x, this.dino_wysokosc_y);
+      if (this.czy_dino_skacze == true) {
+        this.dino_y = this.dino_y - this.predkosc;
+      }
+    }
+
+    DinoSkacz() {
+      if (this.czy_dino_skacze == false) {
+        this.czy_dino_skacze = true;
+        this.predkosc = 0.8;
+      }
     }
   }
 
@@ -101,6 +113,13 @@ Wersje:
   kaktus1.RysujKaktusa();
   dino1.RysujDino();
   }
+
+  function NacisniecieSpacji(zdarzenie) {
+    if ( (zdarzenie.key=='Space') || (zdarzenie.key=='ArrowUp') ) {
+      dino1.DinoSkacz();
+    }
+  }
+  document.addEventListener("keydown", NacisniecieSpacji, false);
 
   let kaktus1, dino1;
   kaktus1 = new kaktus();
