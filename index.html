@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Gra Dino v. 2.1 by Milesrat
+Gra Dino v. 2.2 by Milesrat
 Kod / omowienie / linki: https://oki.org.pl/dino
 Wersje:
 1.0 - Strona www z tekstem
@@ -14,26 +14,23 @@ Wersje:
 
 2.0 - poprawa czytelnosci kodu
 2.1 - kilka kaktusow - czesc pierwsza
+2.2 - dino :D
 -->
 <html>
 <head>
-
 </head>
-
 <body>
  
 <div>
-  <strong>Gra dino v2.1 by CodeMonster</strong>
+  <strong>Gra dino v2.2 by CodeMonster</strong>
 <br />Dino idzie przez pustynie.
 </div>
 
 <canvas id="plansza_canvas" width="1200px" height="400px">
 </canvas>
-
 <script>
 
   let plansza, rysowanie;
-
   plansza = document.getElementById("plansza_canvas");
   rysowanie = plansza.getContext("2d");
 
@@ -41,35 +38,53 @@ Wersje:
   class kaktus {
   
   constructor() {
-   
    this.UstawKaktusa();
-
   }
 
   UstawKaktusa() {
 
-  this.kaktus_x = plansza.width + 40;
-  this.kaktus_y = 323;
-  this.kaktus_szerokosc_x = 26;
-  this.kaktus_wysokosc_y = 52;
-  this.kaktus_predkosc_x = 1;
+   this.kaktus_x = plansza.width + 40;
+   this.kaktus_y = 323;
+   this.kaktus_szerokosc_x = 26;
+   this.kaktus_wysokosc_y = 52;
+   this.kaktus_predkosc_x = 1;
 
- }
+  }
 
-   RysujKaktusa(x) {
+  RysujKaktusa() {
 
     rysowanie.fillStyle = "rgb(65,129,0)";
     rysowanie.fillRect(this.kaktus_x,this.kaktus_y,this.kaktus_szerokosc_x, this.kaktus_wysokosc_y);
     this.kaktus_x = this.kaktus_x - this.kaktus_predkosc_x;
-    if (this.kaktus_x <0) {
+    if (this.kaktus_x <-25) {
       this.UstawKaktusa();
     }
 
-   }
+  }
 
   }
 
-  
+
+  class dino{
+    constructor() {
+     this.UstawDino();
+    }
+
+    UstawDino() {
+     this.dino_x = 90;
+     this.dino_y = 296;
+     this.dino_szerokosc_x = 40;
+     this.dino_wysokosc_y = 79;
+    }
+
+    RysujDino() {
+      rysowanie.fillStyle = "rgb(248,20,254)";
+      rysowanie.fillRect(this.dino_x, this.dino_y, this.dino_szerokosc_x, this.dino_wysokosc_y);
+    }
+  }
+
+
+
   function RysujPlansze() {
    rysowanie.fillStyle = "rgb(181,255,182)";
    rysowanie.fillRect(0,0,plansza.width, plansza.height);
@@ -84,14 +99,15 @@ Wersje:
   RysujPlansze();
   RysujZiemie();
   kaktus1.RysujKaktusa();
+  dino1.RysujDino();
   }
 
-  let kaktus1;
+  let kaktus1, dino1;
   kaktus1 = new kaktus();
+  dino1 = new dino();
   setInterval(Gra, 10);
 
 
 </script>
-  
 </body>
 </html>
