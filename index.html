@@ -16,6 +16,7 @@ Wersje:
 2.1 - kilka kaktusow - czesc pierwsza
 2.2 - dino :D
 2.3 - dino lata
+2.4 - dino skacze !!
 -->
 <html>
 <head>
@@ -23,7 +24,7 @@ Wersje:
 <body>
  
 <div>
-  <strong>Gra dino v2.3 by CodeMonster</strong>
+  <strong>Gra dino v2.4 by CodeMonster</strong>
 <br />Dino idzie przez pustynie.
 </div>
 
@@ -38,30 +39,30 @@ Wersje:
   
   class kaktus {
   
-  constructor() {
-   this.UstawKaktusa();
-  }
+   constructor() {
+    this.UstawKaktusa();
+   }
 
-  UstawKaktusa() {
+   UstawKaktusa() {
 
-   this.kaktus_x = plansza.width + 40;
-   this.kaktus_y = 323;
-   this.kaktus_szerokosc_x = 20;
-   this.kaktus_wysokosc_y = 52;
-   this.kaktus_predkosc_x = 1;
+    this.kaktus_x = plansza.width + 40;
+    this.kaktus_y = 323;
+    this.kaktus_szerokosc_x = 20;
+    this.kaktus_wysokosc_y = 52;
+    this.kaktus_predkosc_x = 1;
 
-  }
+   }
 
-  RysujKaktusa() {
+   RysujKaktusa() {
 
-    rysowanie.fillStyle = "rgb(65,129,0)";
-    rysowanie.fillRect(this.kaktus_x,this.kaktus_y,this.kaktus_szerokosc_x, this.kaktus_wysokosc_y);
-    this.kaktus_x = this.kaktus_x - this.kaktus_predkosc_x;
-    if (this.kaktus_x <-19) {
-      this.UstawKaktusa();
-    }
+     rysowanie.fillStyle = "rgb(65,129,0)";
+     rysowanie.fillRect(this.kaktus_x,this.kaktus_y,this.kaktus_szerokosc_x, this.kaktus_wysokosc_y);
+     this.kaktus_x = this.kaktus_x - this.kaktus_predkosc_x;
+     if (this.kaktus_x <-19) {
+       this.UstawKaktusa();
+     }
 
-  }
+   }
 
   }
 
@@ -77,6 +78,7 @@ Wersje:
      this.dino_szerokosc_x = 40;
      this.dino_wysokosc_y = 79;
      this.czy_dino_skacze = false;
+     this.grawitacja = 0.01;
     }
 
     RysujDino() {
@@ -84,16 +86,24 @@ Wersje:
       rysowanie.fillRect(this.dino_x, this.dino_y, this.dino_szerokosc_x, this.dino_wysokosc_y);
       if (this.czy_dino_skacze == true) {
         this.dino_y = this.dino_y - this.predkosc;
+        this.predkosc = this.predkosc - this.grawitacja;
+        if (this.dino_y >= 296) {
+          this.czy_dino_skacze = false;
+          this.grawitacja = 0.01;
+        }
       }
-    }
+      
+      }
+    
 
     DinoSkacz() {
       if (this.czy_dino_skacze == false) {
         this.czy_dino_skacze = true;
-        this.predkosc = 0.8;
+        this.predkosc = 1.5;
       }
     }
   }
+  
 
 
 
