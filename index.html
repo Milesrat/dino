@@ -21,25 +21,37 @@ Wersje:
 *********************
 
 3.0 - liczba punktow
+3.1 - przycisk START
 -->
 <html>
 <head>
 </head>
 <body>
- 
+
 <div>
-  <strong>Gra dino v3.0 by CodeMonster</strong>
+  <strong>Gra dino v3.1 by CodeMonster</strong>
 <br />Dino idzie przez pustynie.
+</div>
+
+<div id="baner_start">
+  <h1>Nacisnij START i graj!</h1>
 </div>
 
 <canvas id="plansza_canvas" width="1200px" height="400px">
 </canvas>
+
+<div>
+  <button id="przycisk_start" onclick="StartGry()">
+  START!
+  </button>
+</div>
+
 <div  id = "napis_wynik" >
-  Graczu! Niech dino nie cierpi!
+  Wynik: <strong>0</strong>
 </div>
 <div id = "napis_liczba_zyc">
-  Skacz dobrze!
-  </div>
+  Liczba zyc: <strong>3</strong>
+</div>
 
 <script>
 
@@ -69,12 +81,38 @@ Wersje:
      rysowanie.fillStyle = "rgb(65,129,0)";
      rysowanie.fillRect(this.kaktus_x,this.kaktus_y,this.kaktus_szerokosc_x, this.kaktus_wysokosc_y);
      this.kaktus_x = this.kaktus_x - this.kaktus_predkosc_x;
-     if (this.kaktus_x <-19) {
+     if (this.kaktus_x <-19) 
        this.UstawKaktusa();
-     }
-
+     
    }
 
+   CzyKolizja() { 
+      if ( dino1.ZwrocPrawy_X() < this.ZwrocLewy_X() )
+         return false; //1
+      if ( dino1.ZwrocLewy_X() > this.ZwrocPrawy_X() )
+         return false; //2
+      if ( dino1.ZwrocDolny_Y() < this.ZwrocGorny_Y() )
+         return false; //3
+      if ( dino1.ZwrocGorny_Y() > this.ZwrocDolny_Y() )
+        return false; //4
+    return true; 
+   }
+
+   ZwrocLewy_X()  { 
+      return this.kaktus_x; 
+   }
+   ZwrocPrawy_X() { 
+      return this.kaktus_x + this.kaktus_szerokosc_x;  
+   }
+   ZwrocGorny_Y() { 
+      return this.kaktus_y  
+   }
+   ZwrocDolny_Y() { 
+      return this.kaktus_y + this.kaktus_wysokosc_y;  
+   }
+   UstawPrawy_X(nowy_x) { 
+      this.kaktus_x = nowy_x-this.kaktus_szerokosc_x; 
+   }
   }
 
 
@@ -98,12 +136,14 @@ Wersje:
       if (this.czy_dino_skacze == true) {
         this.dino_y = this.dino_y - this.predkosc;
         this.predkosc = this.predkosc - this.grawitacja;
-        if (this.dino_y >= 296) {
+      }
+     if (this.dino_y >= 296) 
           this.czy_dino_skacze = false;
-        }
-      }
+
+        
       
-      }
+      
+    }
     
 
     DinoSkacz() {
@@ -112,10 +152,21 @@ Wersje:
         this.predkosc = 1.5;
       }
     }
+
+   ZwrocLewy_X()  { 
+      return this.dino_x; 
+   }
+   ZwrocPrawy_X() { 
+      return this.dino_x + this.dino_szerokosc_x;  
+   }
+   ZwrocGorny_Y() { 
+      return this.dino_y;
+   }
+   ZwrocDolny_Y() { 
+      return this.dino_y + this.dino_wysokosc_y;  
+   }
   }
   
-
-
 
   function RysujPlansze() {
    rysowanie.fillStyle = "rgb(181,255,182)";
@@ -132,15 +183,28 @@ Wersje:
    if ( (liczba_klatek%10) == 0 )
       ++wynik_gracza;
    document.getElementById("napis_wynik").innerHTML = "Wynik: <strong>" + wynik_gracza + "</strong>";
-   document.getElementById("napis_liczba_zyc").innerHTML = "Liczba zyc: <strong>" + liczba_zyc + "</strong>";
+
+   if ( (kaktus1.CzyKolizja()==true) ) {
+      --liczba_zyc;
+      document.getElementById("napis_liczba_zyc").innerHTML = "Liczba zyc: <strong>" + liczba_zyc + "</strong>";
+      alert("Auuuuuuuuuuuuuuuuu!!!");
+      if (liczba_zyc <= 0) {
+         document.getElementById("baner_start").innerHTML = "<h1>Oj... Dino nie przeszedl pustyni... Sprobuj jeszcze raz!<h/1>";
+         clearInterval(uchwyt_animacji);
+      }
+   }
+   if ( kaktus1.CzyKolizja()==true )   
+      kaktus1.UstawPrawy_X ( dino1.ZwrocLewy_X()-1 );
+    
   }
+   
 
   function Gra() {
-  RysujPlansze();
-  RysujZiemie();
-  kaktus1.RysujKaktusa();
-  dino1.RysujDino();
-  AktualizujWynik();
+   RysujPlansze();
+   RysujZiemie();
+   kaktus1.RysujKaktusa();
+   dino1.RysujDino();
+   AktualizujWynik();
   }
 
   function NacisniecieSpacji(zdarzenie) {
@@ -151,15 +215,22 @@ Wersje:
   document.addEventListener("keydown", NacisniecieSpacji, false);
 
   let kaktus1, dino1;
+  let uchwyt_animacji;
   let liczba_klatek, wynik_gracza, liczba_zyc;
-
-  liczba_klatek = wynik_gracza = 0;
-  liczba_zyc = 3;
 
   kaktus1 = new kaktus();
   dino1 = new dino();
-  setInterval(Gra, 10);
 
+  function StartGry() {
+    document.getElementById("przycisk_start").blur();
+    document.getElementById("baner_start").innerHTML = "<h1>Uważaj proszę na dino ....</h1>";
+    liczba_klatek = wynik_gracza = 0;
+    liczba_zyc = 3;
+    dino1.UstawDino();
+    kaktus1.UstawKaktusa();
+    clearInterval(uchwyt_animacji);
+    uchwyt_animacji = setInterval(Gra, 10);
+  }
 
 </script>
 </body>
