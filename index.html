@@ -23,6 +23,9 @@ Wersje:
 3.0 - liczba punktow
 3.1 - przycisk START
 3.2 - kolizja
+3.3 - kilka kaktusow -czesc druga
+3.4 - grafika kaktusow i dino!!!
+Narazie gra tak zostanie, ale moze w przyszlosci cos ulepsze :D
 -->
 <html>
 <head>
@@ -30,7 +33,7 @@ Wersje:
 <body>
 
 <div>
-  <strong>Gra dino v3.2 by CodeMonster</strong>
+  <strong>Gra dino v3.4 by CodeMonster</strong>
 <br />Dino idzie przez pustynie.
 </div>
 
@@ -60,7 +63,8 @@ Wersje:
   plansza = document.getElementById("plansza_canvas");
   rysowanie = plansza.getContext("2d");
 
-  
+  //KAKTUS     KAKTUS     KAKTUS    KAKTUS    KAKTUS     KAKTUS     KAKTUS     KAKTUS     KAKTUS      KAKTUS     KAKTUS     KAKTUS     KAKTUS     KAKTUS     KAKTUS     KAKTUS      KAKTUS      KAKTUS      KAKTUS
+
   class kaktus {
   
    constructor() {
@@ -74,18 +78,18 @@ Wersje:
     this.kaktus_szerokosc_x = 20;
     this.kaktus_wysokosc_y = 52;
     this.kaktus_predkosc_x = 1;
-
+    this.kolor = "rgb(63,175,6)";
    }
 
    RysujKaktusa() {
 
-     rysowanie.fillStyle = "rgb(65,129,0)";
-     rysowanie.fillRect(this.kaktus_x,this.kaktus_y,this.kaktus_szerokosc_x, this.kaktus_wysokosc_y);
-     this.kaktus_x = this.kaktus_x - this.kaktus_predkosc_x;
-     if (this.kaktus_x <-19) 
-       this.UstawKaktusa();
+      rysowanie.fillStyle = this.kolor;    
+      rysowanie.drawImage(this.img, this.kaktus_x, this.kaktus_y, this.kaktus_szerokosc_x, this.kaktus_wysokosc_y);
+      this.kaktus_x = this.kaktus_x - this.kaktus_predkosc_x;
      
    }
+     
+   
 
    CzyKolizja() { 
       if ( dino1.ZwrocPrawy_X() < this.ZwrocLewy_X() )
@@ -97,6 +101,15 @@ Wersje:
       if ( dino1.ZwrocGorny_Y() > this.ZwrocDolny_Y() )
         return false; //4
     return true; 
+   }
+
+   GrafikaKaktusa(nazwa_pliku) {
+     this.img = new Image();
+     this.img.src = nazwa_pliku;
+   }
+
+   UstawKolor(nowy_kolor) {
+      this.kolor = nowy_kolor;
    }
 
    ZwrocLewy_X()  { 
@@ -114,8 +127,17 @@ Wersje:
    UstawPrawy_X(nowy_x) { 
       this.kaktus_x = nowy_x-this.kaktus_szerokosc_x; 
    }
+   //LOSOWY X        LOSOWY X        LOSOWY X        LOSOWY X        LOSOWY X        LOSOWY X        LOSOWY X        LOSOWY X        LOSOWY X        LOSOWY X        LOSOWY X        LOSOWY X
+   UstawLosowyPrawy_X(x_drugiego_kaktusa) {
+      let losowy_przedzial;
+      losowy_przedzial = 100 + Math.random() * 700;
+      this.kaktus_x = x_drugiego_kaktusa + losowy_przedzial;
+      if (this.kaktus_x < plansza.width)
+         this.kaktus_x = plansza.width+losowy_przedzial;
+   }
   }
 
+  //DINO    DINO    DINO     DINO     DINO      DINO     DINO     DINO    DINO     DINO     DINO    DINO    DINO    DINO    DINO    DINO    DINO    DINO    DINO    DINO    DINO    DINO    DINO    DINO    DINO
 
   class dino{
     constructor() {
@@ -133,18 +155,15 @@ Wersje:
 
     RysujDino() {
       rysowanie.fillStyle = "rgb(248,20,254)";
-      rysowanie.fillRect(this.dino_x, this.dino_y, this.dino_szerokosc_x, this.dino_wysokosc_y);
+      //rysowanie.fillRect(this.dino_x, this.dino_y, this.dino_szerokosc_x, this.dino_wysokosc_y);
+      rysowanie.drawImage(this.img, this.dino_x, this.dino_y, this.dino_szerokosc_x, this.dino_wysokosc_y);
       if (this.czy_dino_skacze == true) {
         this.dino_y = this.dino_y - this.predkosc;
         this.predkosc = this.predkosc - this.grawitacja;
       }
-     if (this.dino_y >= 296) 
+      if (this.dino_y >= 296) 
           this.czy_dino_skacze = false;
-
-        
-      
-      
-    }
+      }
     
 
     DinoSkacz() {
@@ -166,6 +185,11 @@ Wersje:
    ZwrocDolny_Y() { 
       return this.dino_y + this.dino_wysokosc_y;  
    }
+
+   GrafikaDino(nazwa_pliku) {
+     this.img = new Image();
+     this.img.src = nazwa_pliku;
+   }
   }
   
 
@@ -185,7 +209,7 @@ Wersje:
       ++wynik_gracza;
    document.getElementById("napis_wynik").innerHTML = "Wynik: <strong>" + wynik_gracza + "</strong>";
 
-   if ( (kaktus1.CzyKolizja()==true) ) {
+   if ( (kaktus1.CzyKolizja()==true) || (kaktus2.CzyKolizja()==true) || (kaktus3.CzyKolizja()==true) ) {
       --liczba_zyc;
       document.getElementById("napis_liczba_zyc").innerHTML = "Liczba zyc: <strong>" + liczba_zyc + "</strong>";
       alert("Auuuuuuuuuuuuuuuuu!!!");
@@ -196,6 +220,12 @@ Wersje:
    }
    if ( kaktus1.CzyKolizja()==true )   
       kaktus1.UstawPrawy_X ( dino1.ZwrocLewy_X()-1 );
+
+   if ( kaktus2.CzyKolizja()==true )   
+      kaktus2.UstawPrawy_X ( dino1.ZwrocLewy_X()-1 );
+
+   if ( kaktus3.CzyKolizja()==true )   
+      kaktus3.UstawPrawy_X ( dino1.ZwrocLewy_X()-1 );
     
   }
    
@@ -204,6 +234,16 @@ Wersje:
    RysujPlansze();
    RysujZiemie();
    kaktus1.RysujKaktusa();
+   if ( kaktus1.kaktus_x < 0 )
+      kaktus1.UstawLosowyPrawy_X( kaktus2.ZwrocLewy_X() ); 
+
+   kaktus2.RysujKaktusa();
+   if ( kaktus2.kaktus_x < 0 )
+      kaktus2.UstawLosowyPrawy_X( kaktus1.ZwrocLewy_X() );
+
+   kaktus3.RysujKaktusa();
+   if ( kaktus3.kaktus_x < 0 )
+      kaktus3.UstawLosowyPrawy_X( kaktus2.ZwrocLewy_X() ); 
    dino1.RysujDino();
    AktualizujWynik();
   }
@@ -215,11 +255,13 @@ Wersje:
   }
   document.addEventListener("keydown", NacisniecieSpacji, false);
 
-  let kaktus1, dino1;
+  let kaktus1, kaktus2, kaktus3, dino1;
   let uchwyt_animacji;
   let liczba_klatek, wynik_gracza, liczba_zyc;
 
   kaktus1 = new kaktus();
+  kaktus2 = new kaktus();
+  kaktus3 = new kaktus();
   dino1 = new dino();
 
   function StartGry() {
@@ -228,7 +270,19 @@ Wersje:
     liczba_klatek = wynik_gracza = 0;
     liczba_zyc = 3;
     dino1.UstawDino();
+    dino1.GrafikaDino("dino.png");
     kaktus1.UstawKaktusa();
+    kaktus1.GrafikaKaktusa("kaktus_1_i_3.png");
+    kaktus1.UstawLosowyPrawy_X( kaktus3.ZwrocLewy_X() );
+
+    kaktus2.UstawKaktusa();
+    kaktus2.GrafikaKaktusa("kaktus_2.png");
+    kaktus2.UstawLosowyPrawy_X( kaktus1.ZwrocLewy_X() );
+    kaktus2.UstawKolor ( "rgb(16,90,0)" );
+
+    kaktus3.UstawKaktusa();
+    kaktus3.GrafikaKaktusa("kaktus_1_i_3.png");
+    kaktus3.UstawLosowyPrawy_X( kaktus2.ZwrocLewy_X() );
     clearInterval(uchwyt_animacji);
     uchwyt_animacji = setInterval(Gra, 10);
   }
